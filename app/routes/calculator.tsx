@@ -143,7 +143,7 @@ export default function Calculator({loaderData}: Route.ComponentProps) {
               </BarChart>
             </ResponsiveContainer>
           ) : (
-            <FontAwesomeIcon icon={faCircleNotch} size="4x"/>
+            <FontAwesomeIcon icon={faCircleNotch} size="4x" spin/>
           )}
         </div>
       </div>
