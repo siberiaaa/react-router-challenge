@@ -22,10 +22,11 @@ export function RevenueCalculator(customers: number, newProjects: number, existi
 
       const revenue = (totalCustomer * (newProjects * 95 + existingProjectsPerCustomer * 0.25)) * REFERRAL_PAYOUT;
     
+      
       const revenueObj : RevenueData = {
         month: months[currentMonth],
-        revenue:parseFloat(revenue.toFixed(2)),
-        revenueLabel:`$${parseFloat(revenue.toFixed(2)).toLocaleString('en-US')}`
+        revenue:Math.floor(revenue),
+        revenueLabel:`$${Math.floor(revenue).toLocaleString('en-US')}`
       }
 
       if (currentMonth == 0){

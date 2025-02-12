@@ -33,7 +33,7 @@ export default function Calculator({loaderData}: Route.ComponentProps) {
   const [newProjectsValue, setNewProjectsValue] = useState<number>(10);
   const [existingProjectsValue, setExistingProjectsValue] = useState<number>(300);
 
-  const [incomeValue, setIncomeValue] = useState<string>('$0');
+  const [incomeValue, setIncomeValue] = useState<number>(0);
   const [barData, setBarData] = useState<RevenueData[]>([]);
 
   //Control just slider values
@@ -64,7 +64,7 @@ export default function Calculator({loaderData}: Route.ComponentProps) {
       const data: RevenueData[] = JSON.parse(fetcher.data);
 
       setBarData(data);
-      setIncomeValue(data[12].revenueLabel);
+      setIncomeValue(data[12].revenue);
     }
   }, [fetcher.data]);
 
@@ -82,10 +82,10 @@ export default function Calculator({loaderData}: Route.ComponentProps) {
           <div className="text-gray-600 text-base font-medium mb-10">
             <div className="flex justify-between">
               <p>Referred Customers per month</p>
-              <p>{form.customers}</p>
+              <p>{customersValue}</p>
             </div>
 
-            <StyledSlider value={form.customers} min={1} max={10} onChangeCommitted={handleCalculate} onChange={handleChangeCustomers} className="mb-1" />
+            <StyledSlider value={customersValue} min={1} max={10} onChangeCommitted={handleCalculate} onChange={handleChangeCustomers} className="mb-1" />
 
             <div className="flex justify-between">
               <p>
@@ -94,10 +94,10 @@ export default function Calculator({loaderData}: Route.ComponentProps) {
                   <FontAwesomeIcon icon={faCircleInfo} className="w-5 h-5"/>
                 </Tooltip>
               </p>
-              <p>{form.newProjects}</p>
+              <p>{newProjectsValue}</p>
             </div>
 
-            <StyledSlider value={form.newProjects} min={5} max={50} onChangeCommitted={handleCalculate} onChange={handleChangeNewProjects} className="mb-1" />
+            <StyledSlider value={newProjectsValue} min={5} max={50} onChangeCommitted={handleCalculate} onChange={handleChangeNewProjects} className="mb-1" />
 
             <div className="flex justify-between">
               <p>
@@ -106,11 +106,11 @@ export default function Calculator({loaderData}: Route.ComponentProps) {
                   <FontAwesomeIcon icon={faCircleInfo} className="w-5 h-5"/>
                 </Tooltip>
               </p>
-              <p>{form.existingProjects}</p>
+              <p>{existingProjectsValue}</p>
             </div>
 
             <StyledSlider
-              value={form.existingProjects}
+              value={existingProjectsValue}
               min={0}
               max={10000}
               onChangeCommitted={handleCalculate}
@@ -123,7 +123,7 @@ export default function Calculator({loaderData}: Route.ComponentProps) {
             Your <strong>montly income</strong> after 1 year:
           </p>
          
-  <p className="text-center text-6xl font-bold min-h-[180px]">{incomeValue}</p>
+  <p className="text-center text-6xl font-bold min-h-[180px]">${Intl.NumberFormat("en-US").format(incomeValue)}</p>
 
         </div>
 
@@ -132,7 +132,7 @@ export default function Calculator({loaderData}: Route.ComponentProps) {
             <ResponsiveContainer height={680}>
               <BarChart data={barData}>
                 <XAxis dataKey="month" axisLine={false} tickLine={false} stroke="var(--color-gray-500)" />
-                <YAxis domain={[0, 'dataMax + 4950']} hide={true} />
+                <YAxis domain={[0, incomeValue + incomeValue*0.10]} hide={true} />
 
                 <Bar maxBarSize={50} dataKey="revenue" offset={50}>
                   {barData.map((entry, index) => (
